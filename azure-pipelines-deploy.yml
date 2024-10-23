@@ -10,7 +10,7 @@ variables:
   imageName: 'shoppingapp'
   tag: 'v1'
   azureSubscription: 'RM-sc'  # Azure RM service connection
-  appServiceName: 'shopping-website'  # Your Azure App Service name
+  appServiceName: 'myapp07'  # Your Azure App Service name
   resourceGroupName: 'My-RG'  # Resource group name
 
 steps:
