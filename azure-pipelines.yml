@@ -1,0 +1,34 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Define variables for ACR and image tag
+  acrName: 'webacr7'
+  imageName: 'shopping-website'
+  tag: 'v1'
+
+steps:
+# Step 1: Checkout code from the repository
+- task: Checkout@2
+
+# Step 2: Log in to Azure Container Registry (ACR)
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '979f5139-37ae-4a1d-a8ca-ae8eed910ec9'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az acr login --name $(acrName)
+
+# Step 3: Build the Docker image
+- script: |
+    docker build -t $(acrName).azurecr.io/$(imageName):$(tag) .
+  displayName: 'Build Docker Image'
+
+# Step 4: Push the Docker image to ACR
+- script: |
+    docker push $(acrName).azurecr.io/$(imageName):$(tag)
+  displayName: 'Push Docker Image to ACR'
