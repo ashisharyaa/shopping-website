@@ -9,7 +9,7 @@ variables:
   acrName: 'webacr7'
   imageName: 'shopping-website'
   tag: 'v1'
-  azureSubscription: '979f5139-37ae-4a1d-a8ca-ae8eed910ec9'  # Update this with your Azure RM service connection name
+  azureSubscription: 'RM-sc'  # Update this with your Azure RM service connection name
 
 steps:
 # Step 1: Checkout code from the repository
