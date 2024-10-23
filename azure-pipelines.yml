@@ -12,7 +12,7 @@ variables:
 
 steps:
 # Step 1: Checkout code from the repository
-- task: Checkout@2
+- checkout: self  # This checks out the code from the repository
 
 # Step 2: Log in to Azure Container Registry (ACR)
 - task: AzureCLI@2
@@ -27,8 +27,11 @@ steps:
 - script: |
     docker build -t $(acrName).azurecr.io/$(imageName):$(tag) .
   displayName: 'Build Docker Image'
+  continueOnError: false  # Ensure the pipeline fails on build errors
 
 # Step 4: Push the Docker image to ACR
 - script: |
     docker push $(acrName).azurecr.io/$(imageName):$(tag)
   displayName: 'Push Docker Image to ACR'
+  continueOnError: false  # Ensure the pipeline fails if push fails
+
