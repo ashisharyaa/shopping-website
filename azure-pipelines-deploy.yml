@@ -1,0 +1,53 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Define variables for ACR and image tag
+  acrName: 'webacr7'
+  imageName: 'shopping-website'
+  tag: 'v1'
+  azureSubscription: 'RM-sc'  # Azure RM service connection
+  appServiceName: 'shopping-website'  # Your Azure App Service name
+  resourceGroupName: 'My-RG'  # Resource group name
+
+steps:
+# Step 1: Checkout code from the repository
+- checkout: self
+
+# Step 2: Log in to Azure Container Registry (ACR)
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az acr login --name $(acrName)
+
+# Step 3: Build the Docker image
+- script: |
+    docker build -t $(acrName).azurecr.io/$(imageName):$(tag) .
+  displayName: 'Build Docker Image'
+  continueOnError: false
+
+# Step 4: Push the Docker image to ACR
+- script: |
+    docker push $(acrName).azurecr.io/$(imageName):$(tag)
+  displayName: 'Push Docker Image to ACR'
+  continueOnError: false
+
+# Step 5: Log out of ACR
+- script: |
+    az acr logout --name $(acrName)
+  displayName: 'Log out of ACR'
+
+# Step 6: Deploy to Azure App Service
+- task: AzureWebAppContainer@1
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(appServiceName)'
+    containerImage: '$(acrName).azurecr.io/$(imageName):$(tag)'
+    resourceGroupName: '$(resourceGroupName)'
+  displayName: 'Deploy to Azure App Service'
