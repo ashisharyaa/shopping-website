@@ -7,7 +7,7 @@ pool:
 variables:
   # Define variables for ACR and image tag
   acrName: 'webacr7'
-  imageName: 'shopping-website'
+  imageName: 'shoppingapp'
   tag: 'v1'
   azureSubscription: 'RM-sc'  # Azure RM service connection
   appServiceName: 'shopping-website'  # Your Azure App Service name
