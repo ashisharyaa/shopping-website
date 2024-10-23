@@ -38,11 +38,6 @@ steps:
   displayName: 'Push Docker Image to ACR'
   continueOnError: false
 
-# Step 5: Log out of ACR
-- script: |
-    az acr logout --name $(acrName)
-  displayName: 'Log out of ACR'
-
 # Step 6: Deploy to Azure App Service
 - task: AzureWebAppContainer@1
   inputs:
