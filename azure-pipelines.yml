@@ -18,7 +18,6 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'acr-sc'
-    azureSubscription: '979f5139-37ae-4a1d-a8ca-ae8eed910ec9'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
